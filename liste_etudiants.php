@@ -1,20 +1,20 @@
 <?php
-session_start();
+    session_start();
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['identifiant'])) {
-    header('Location: connexion.php');
-    exit();
-}
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['identifiant'])) {
+        header('Location: connexion.php');
+        exit();
+    }
 
-// Connexion à la base de données (ajustez les paramètres selon votre configuration)
-$pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Connexion à la base de données (ajustez les paramètres selon votre configuration)
+    $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Récupérer la liste des étudiants depuis la base de données en ordre alphabétique
-$stmt = $pdo->prepare("SELECT * FROM etudiant ORDER BY nom, prenom");
-$stmt->execute();
-$etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Récupérer la liste des étudiants depuis la base de données en ordre alphabétique
+    $stmt = $pdo->prepare("SELECT * FROM etudiant ORDER BY nom, prenom");
+    $stmt->execute();
+    $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +66,8 @@ $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background-color: #2c3e50;
             color: white;
             text-align: center;
-            padding: 1em;
+            position: center;
+            padding: 5px;
             position: fixed;
             bottom: 0;
             width: 100%;
@@ -86,9 +87,20 @@ $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         footer div {
-            display: flex;
+            display: inline-block;
             justify-content: center;
+            position: relative;
             margin-top: 10px;
+            padding-right: 10px !important; 
+        }
+        @media screen and (max-width: 400px) {
+            footer div{
+                margin-left: 0px;
+            }
+            footer a{
+                padding: 2px;
+                margin: 0 3px;
+            }
         }
     </style>
 </head>

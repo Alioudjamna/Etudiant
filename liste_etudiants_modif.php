@@ -1,20 +1,20 @@
 <?php
-session_start();
+    session_start();
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['identifiant'])) {
-    header('Location: connexion.php');
-    exit();
-}
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['identifiant'])) {
+        header('Location: connexion.php');
+        exit();
+    }
 
-// Connexion à la base de données (ajustez les paramètres selon votre configuration)
-$pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Connexion à la base de données (ajustez les paramètres selon votre configuration)
+    $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Récupérer la liste des étudiants depuis la base de données
-$stmt = $pdo->prepare("SELECT * FROM etudiant ORDER BY nom, prenom");
-$stmt->execute();
-$etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Récupérer la liste des étudiants depuis la base de données
+    $stmt = $pdo->prepare("SELECT * FROM etudiant ORDER BY nom, prenom");
+    $stmt->execute();
+    $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -28,14 +28,16 @@ $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         body {
         background-color: #f0f5f9; /* Nouvelle couleur de fond */
+        display: flex;
     }
 
     .container {
         background-color: #ffffff;
+        position: absolute;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
-        margin-top: 50px;
+        margin: 10px;
     }
 
     h2 {
@@ -67,11 +69,11 @@ $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         background-color: #2c3e50;
         color: white;
         text-align: center;
-        padding: 1em;
+        padding: 5px;
         position: fixed;
-        bottom: 0;
+        bottom: 0%;
         width: 100%;
-    }
+        }
 
     footer a {
         color: white;
@@ -80,17 +82,30 @@ $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         padding: 5px;
         border-radius: 5px;
         transition: background-color 0.3s;
-    }
+        }
 
     footer a:hover {
-        background-color: #34495e; /* Nouvelle couleur au survol des liens dans le pied de page */
+        background-color: #34495e;
     }
 
     footer div {
-        display: flex;
+        display: inline;
         justify-content: center;
+        position: relative;
         margin-top: 10px;
+        padding-right: 10px !important; 
     }
+    @media screen and (max-width: 400px) {
+        footer div{
+            margin-left: 0px;
+        }
+        footer a{
+            padding: 2px;
+            margin: 0 3px;
+        }
+    }
+
+
 </style>
 </head>
 <body>
@@ -122,17 +137,17 @@ $etudiants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </table>
     </div>
     <footer>
-    <p>© 2023 Projet Gestion des Étudiants</p>
-    <div>
-        <a href="accueil.php">Accueil</a>
-        <a href="admin.php">Admin</a>
-        <a href="ajout_etudiant.php">Ajouter Étudiant</a>
-        <a href="liste_etudiants.php">Liste Étudiants</a>
-        <a href="ajout_filiere.php">Ajouter Filière</a>
-        <a href="liste_filieres.php">Liste Filières</a>
-        <a href="liste_etudiants_modif.php">Modification Étudiant</a>
-        <a href="modification_filiere.php">Modification Filière</a>
-    </div>
-</footer>
+        <p>© 2023 Projet Gestion des Étudiants</p>
+        <div>
+            <a href="accueil.php">Accueil</a>
+            <a href="admin.php">Admin</a>
+            <a href="ajout_etudiant.php">Ajouter Étudiant</a>
+            <a href="liste_etudiants.php">Liste Étudiants</a>
+            <a href="ajout_filiere.php">Ajouter Filière</a>
+            <a href="liste_filieres.php">Liste Filières</a>
+            <a href="liste_etudiants_modif.php">Modification Étudiant</a>
+            <a href="modification_filiere.php">Modification Filière</a>
+        </div>
+    </footer>
 </body>
 </html>

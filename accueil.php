@@ -97,7 +97,6 @@ if (isset($_SESSION['identifiant'])) {
             border-radius: 8px;
             text-decoration: none;
         }
-
         a {
             color: #007bff;
             text-decoration: none;
@@ -108,17 +107,15 @@ if (isset($_SESSION['identifiant'])) {
         }
 
         footer {
-            background-color: #333;
+            background-color: #2c3e50;
             color: white;
             text-align: center;
-            padding: 1em;
+            position: center;
+            padding: 5px;
             position: fixed;
+            position: relative;
             bottom: 0;
             width: 100%;
-        }
-
-        footer p {
-            margin: 0;
         }
 
         footer a {
@@ -131,7 +128,24 @@ if (isset($_SESSION['identifiant'])) {
         }
 
         footer a:hover {
-            background-color: #555;
+            background-color: #34495e;
+        }
+
+        footer div {
+            display: inline;
+            justify-content: center;
+            position: relative;
+            margin-top: 10px;
+            padding-right: 10px !important; 
+        }
+        @media screen and (max-width: 400px) {
+            footer div{
+                margin-left: 0px;
+            }
+            footer a{
+                padding: 2px;
+                margin: 0 3px;
+            }
         }
     </style>
 </head>
@@ -152,13 +166,13 @@ if (isset($_SESSION['identifiant'])) {
 
         <!-- Dashboard avec des liens vers les différentes fonctionnalités -->
         <div class="dashboard">
-            <a href="admin.php" class="dashboard-item">Page administrateur</a>
-            <a href="liste_etudiants.php" class="dashboard-item">Liste des étudiants</a>
-            <a href="liste_filieres.php" class="dashboard-item">Liste des filières</a>
-            <a href="ajout_etudiant.php" class="dashboard-item">Ajout d'un étudiant</a>
-            <a href="ajout_filiere.php" class="dashboard-item">Ajout d'une filière</a>
-            <a href="liste_etudiants_modif.php" class="dashboard-item">Modif etudiant</a>
-            <a href="modification_filiere.php" class="dashboard-item">Modification d'une filière</a>
+            <a href="admin.php" class="dashboard-item"><div class="tet">Page administrateur</div></a>
+            <a href="liste_etudiants.php" class="dashboard-item"><div class="tet">Liste des étudiants</div></a>
+            <a href="liste_filieres.php" class="dashboard-item"><div class="tet">Liste des filières</div></a>
+            <a href="ajout_etudiant.php" class="dashboard-item"><div class="tet">Ajout d'un étudiant</div></a>
+            <a href="ajout_filiere.php" class="dashboard-item"><div class="tet">Ajout d'une filière</div></a>
+            <a href="liste_etudiants_modif.php" class="dashboard-item"><div class="tet">Modif etudiant</div></a>
+            <a href="modification_filiere.php" class="dashboard-item"><div class="tet">Modification d'une filière</div></a>
         </div>
 
         <p><a href="deconnexion.php">Se déconnecter</a></p>
@@ -167,7 +181,7 @@ if (isset($_SESSION['identifiant'])) {
     <!-- Pied de page -->
     <footer>
         <p>© 2023 Projet Gestion des Étudiants</p>
-        <div style="float: right;">
+        <div>
             <a href="accueil.php">Accueil</a>
             <a href="admin.php">Admin</a>
             <a href="ajout_etudiant.php">Ajouter Étudiant</a>
@@ -176,9 +190,6 @@ if (isset($_SESSION['identifiant'])) {
             <a href="liste_filieres.php">Liste Filières</a>
             <a href="liste_etudiants_modif.php">modification étudiant</a>
             <a href="modification_filiere.php">modification filiere</a>
-           
-            
-    </div>
         </div>
     </footer>
     <script>

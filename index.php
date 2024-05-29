@@ -57,30 +57,46 @@
             background-repeat: no-repeat;
             font-family: 'Arial', sans-serif;
             display: flex;
+            flex-direction: reverse;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
             position: relative;
+            width: 100%;
+            height: 100%;
         }
 
         .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            display: flex;
+            position: absolute; 
             background-color: rgba(0, 0, 0, 0.5); /* Ajustez la transparence en modifiant le dernier paramètre */
         }
 
-        .container {
-            position: relative;
+        .containera {
+            position: center;
             z-index: 1;
             max-width: 400px;
             padding: 20px;
+            margin: 5px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .containerb {
+            position: center;
+            z-index: 1;
+            max-width: 400px;
+            padding: 20px;
+            margin: 5px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        @media screen and (max-width: 440px){
+            body{
+                flex-direction: column-reverse;
+            }
         }
 
         h2 {
@@ -154,7 +170,7 @@
 </head>
 <body>
     <div class="overlay"></div>
-    <div class="container">
+    <div class="containera">
         <h2>Connexion</h2>
 
         <!-- Afficher les erreurs éventuelles -->
@@ -180,7 +196,7 @@
         <p class="mt-3"><small>Vous n'avez pas de compte? <a href="inscription.php">Inscrivez-vous ici</small></a></p>
     </div>
 
-    <div class="container">
+    <div class="containerb">
         <!-- Message de bienvenue dans un cadre bleu -->
         <div class="welcome-box bg-primary text-white p-4 mb-4">
             <p class="mb-0">
@@ -188,5 +204,6 @@
             </p>
         </div>
     </div>
+
 </body>
 </html>

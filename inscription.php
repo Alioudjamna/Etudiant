@@ -1,48 +1,48 @@
 <?php
 // Vérifier si le formulaire a été soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Connexion à la base de données (ajustez les informations de connexion selon votre configuration)
-    try {
-        $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants;charset=utf8', 'root', '');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        die('Erreur de connexion à la base de données : ' . $e->getMessage());
-    }
-
-    // Récupérer les données du formulaire
-    $identifiant = isset($_POST['identifiant']) ? $_POST['identifiant'] : '';
-    $motdepasse = isset($_POST['motdepasse']) ? $_POST['motdepasse'] : '';
-    $email = isset($_POST['email']) ? $_POST['email'] : ''; // Nouveau champ d'email
-
-    // Vérifier que tous les champs obligatoires sont remplis
-    if (empty($identifiant) || empty($motdepasse) || empty($email)) {
-        $erreur = 'Veuillez remplir tous les champs.';
-    } else {
-        // Préparer la requête d'insertion
-        $stmt = $pdo->prepare("INSERT INTO utilisateur (identifiant, motdepasse, email, profil) VALUES (:identifiant, :motdepasse, :email, :profil)");
-
-        // Générer le mot de passe haché
-        $motdepasse_hashed = password_hash($motdepasse, PASSWORD_DEFAULT);
-
-        // Définir le profil par défaut
-        $profil = 'invite';
-
-        // Liaison des paramètres
-        $stmt->bindParam(':identifiant', $identifiant);
-        $stmt->bindParam(':motdepasse', $motdepasse_hashed);
-        $stmt->bindParam(':email', $email); // Nouveau champ d'email
-        $stmt->bindParam(':profil', $profil);
-
-        // Exécution de la requête
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Connexion à la base de données (ajustez les informations de connexion selon votre configuration)
         try {
-            $stmt->execute();
-            header("Location: index.php");
-            exit();
+            $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants;charset=utf8', 'root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            $erreur = 'Erreur lors de l\'inscription : ' . $e->getMessage();
+            die('Erreur de connexion à la base de données : ' . $e->getMessage());
+        }
+
+        // Récupérer les données du formulaire
+        $identifiant = isset($_POST['identifiant']) ? $_POST['identifiant'] : '';
+        $motdepasse = isset($_POST['motdepasse']) ? $_POST['motdepasse'] : '';
+        $email = isset($_POST['email']) ? $_POST['email'] : ''; // Nouveau champ d'email
+
+        // Vérifier que tous les champs obligatoires sont remplis
+        if (empty($identifiant) || empty($motdepasse) || empty($email)) {
+            $erreur = 'Veuillez remplir tous les champs.';
+        } else {
+            // Préparer la requête d'insertion
+            $stmt = $pdo->prepare("INSERT INTO utilisateur (identifiant, motdepasse, email, profil) VALUES (:identifiant, :motdepasse, :email, :profil)");
+
+            // Générer le mot de passe haché
+            $motdepasse_hashed = password_hash($motdepasse, PASSWORD_DEFAULT);
+
+            // Définir le profil par défaut
+            $profil = 'invite';
+
+            // Liaison des paramètres
+            $stmt->bindParam(':identifiant', $identifiant);
+            $stmt->bindParam(':motdepasse', $motdepasse_hashed);
+            $stmt->bindParam(':email', $email); // Nouveau champ d'email
+            $stmt->bindParam(':profil', $profil);
+
+            // Exécution de la requête
+            try {
+                $stmt->execute();
+                header("Location: index.php");
+                exit();
+            } catch (PDOException $e) {
+                $erreur = 'Erreur lors de l\'inscription : ' . $e->getMessage();
+            }
         }
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-family: 'Arial', sans-serif;
             background-color: #f2f2f2;
             margin: 0;
-            padding: 0;
+            padding: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -81,6 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-bottom: 10px;
             color: #666;
         }
+
+        
 
         input[type="text"],
         input[type="email"],

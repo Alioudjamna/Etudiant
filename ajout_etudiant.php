@@ -148,18 +148,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         footer {
-            background-color: #333;
+            background-color: #2c3e50;
             color: white;
             text-align: center;
-            padding: 1em;
-            width: 100%;
-            position: fixed;
+            position: center;
+            padding: 5px;
+            position: relative;
             bottom: 0;
-            z-index: 2;
-        }
-
-        footer p {
-            margin: 0;
+            width: 100%;
         }
 
         footer a {
@@ -172,12 +168,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         footer a:hover {
-            background-color: #555;
+            background-color: #34495e;
         }
 
         footer div {
-            display: flex;
+            display: inline;
             justify-content: center;
+            position: relative;
+            margin-top: 10px;
+            padding-right: 10px !important; 
+        }
+        @media screen and (max-width: 400px) {
+            footer div{
+                margin-left: 0px;
+            }
+            footer a{
+                padding: 2px;
+                margin: 0 3px;
+            }
         }
 
         #change-bg {
@@ -276,6 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit">Ajouter Étudiant</button>
     </form>
+    <div id="change-bg" onclick="changeBackground()">Changer le fond d'écran</div>
 
     <footer>
         <p>© 2023 Projet Gestion des Étudiants</p>
@@ -290,8 +299,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="modification_filiere.php">Modification Filière</a>
         </div>
     </footer>
-
-    <div id="change-bg" onclick="changeBackground()">Changer le fond d'écran</div>
 
     <script>
         function validateForm() {

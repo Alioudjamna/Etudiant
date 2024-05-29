@@ -102,17 +102,14 @@ $filieres = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         footer {
-            background-color: #333;
+            background-color: #2c3e50;
             color: white;
             text-align: center;
-            padding: 1em; 
-            position: fixed;
+            padding: 5px;
+            margin-top: 20px;
+            position: relative;
             bottom: 0;
             width: 100%;
-        }
-
-        footer p {
-            margin: 0;
         }
 
         footer a {
@@ -125,12 +122,24 @@ $filieres = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         footer a:hover {
-            background-color: #555;
+            background-color: #34495e;
         }
 
         footer div {
-            display: flex;
+            display: inline-block;
             justify-content: center;
+            position: relative;
+            margin-top: 10px;
+            padding-right: 10px !important; 
+        }
+        @media screen and (max-width: 400px) {
+            footer div{
+                margin-left: 0px;
+            }
+            footer a{
+                padding: 2px;
+                margin: 0 3px;
+            }
         }
     </style>
 </head>

@@ -6,57 +6,57 @@
     <title>Modifier une filière</title>
     <style>
      body {
-    background-color: #f8f9fa;
-    font-family: 'Arial', sans-serif;
-}
+        background-color: #f8f9fa;
+        font-family: 'Arial', sans-serif;
+    }
 
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-h2 {
-    text-align: center;
-    color: #007bff;
-}
+    h2 {
+        text-align: center;
+        color: #007bff;
+    }
 
-form {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
+    form {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
 
-form label {
-    font-weight: bold;
-}
+    form label {
+        font-weight: bold;
+    }
 
-form input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 15px;
-    box-sizing: border-box;
-}
+    form input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
 
-form input[type="text"] {
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-}
+    form input[type="text"] {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
 
-form input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-}
+    form input[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+    }
 
-form input[type="submit"]:hover {
-    background-color: #0056b3;
-}
+    form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
 
     footer {
-        background-color: #333;
+        background-color: #343a40;
         color: white;
         text-align: center;
         padding: 1em;
@@ -80,11 +80,6 @@ form input[type="submit"]:hover {
 
     footer a:hover {
         background-color: #555;
-    }
-
-    footer div {
-        display: flex;
-        justify-content: center;
     }
 </style>
 </head>

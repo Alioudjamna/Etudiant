@@ -1,49 +1,49 @@
 <?php
-session_start();
+    session_start();
 
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['identifiant'])) {
-    header('Location: connexion.php');
-    exit();
-}
+    // Vérifier si l'utilisateur est connecté
+    if (!isset($_SESSION['identifiant'])) {
+        header('Location: connexion.php');
+        exit();
+    }
 
-// Connexion à la base de données (ajustez les paramètres selon votre configuration)
-$pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Connexion à la base de données (ajustez les paramètres selon votre configuration)
+    $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Traitement du formulaire d'ajout de filière
-$error_message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Assurez-vous de valider et d'ajouter les informations de la filière dans votre base de données
-    $nom_filiere = $_POST['nom_filiere'];
-    // Ajoutez d'autres champs selon vos besoins
+    // Traitement du formulaire d'ajout de filière
+    $error_message = '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Assurez-vous de valider et d'ajouter les informations de la filière dans votre base de données
+        $nom_filiere = $_POST['nom_filiere'];
+        // Ajoutez d'autres champs selon vos besoins
 
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM filiere WHERE nom_filiere = :nom_filiere");
-    $stmt->bindParam(':nom_filiere', $nom_filiere);
-    $stmt->execute();
-    $count = $stmt->fetchColumn();
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM filiere WHERE nom_filiere = :nom_filiere");
+        $stmt->bindParam(':nom_filiere', $nom_filiere);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
 
-    if ($count > 0) {
-        // Afficher un message d'erreur si la filière existe déjà
-        $error_message = "Cette filière existe déjà.";
-    } else {
-        // Ajouter la nouvelle filière dans la base de données
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Assurez-vous de valider et d'ajouter les informations de la filière dans votre base de données
-            $nom_filiere = $_POST['nom_filiere'];
-            // Ajoutez d'autres champs selon vos besoins
-        
+        if ($count > 0) {
+            // Afficher un message d'erreur si la filière existe déjà
+            $error_message = "Cette filière existe déjà.";
+        } else {
             // Ajouter la nouvelle filière dans la base de données
-            $stmt = $pdo->prepare("INSERT INTO filiere (nom_filiere) VALUES (:nom_filiere)");
-            $stmt->bindParam(':nom_filiere', $nom_filiere);
-            $stmt->execute();
-        
-            // Rediriger après l'ajout
-            header('Location: liste_filieres.php');
-            exit();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Assurez-vous de valider et d'ajouter les informations de la filière dans votre base de données
+                $nom_filiere = $_POST['nom_filiere'];
+                // Ajoutez d'autres champs selon vos besoins
+            
+                // Ajouter la nouvelle filière dans la base de données
+                $stmt = $pdo->prepare("INSERT INTO filiere (nom_filiere) VALUES (:nom_filiere)");
+                $stmt->bindParam(':nom_filiere', $nom_filiere);
+                $stmt->execute();
+            
+                // Rediriger après l'ajout
+                header('Location: liste_filieres.php');
+                exit();
+            }
         }
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -100,18 +100,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     footer {
-        background-color: #333;
+        background-color: #2c3e50;
         color: white;
         text-align: center;
-        padding: 1em;
+        padding: 5px;
         position: fixed;
-        bottom: 0;
+        bottom: 0%;
         width: 100%;
-    }
-
-    footer p {
-        margin: 0;
-    }
+        }
 
     footer a {
         color: white;
@@ -120,15 +116,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         padding: 5px;
         border-radius: 5px;
         transition: background-color 0.3s;
-    }
+        }
 
     footer a:hover {
-        background-color: #555;
+        background-color: #34495e;
     }
 
     footer div {
-        display: flex;
+        display: inline;
         justify-content: center;
+        position: relative;
+        margin-top: 10px;
+        padding-right: 10px !important; 
+    }
+    @media screen and (max-width: 400px) {
+        footer div{
+            margin-left: 0px;
+        }
+        footer a{
+            padding: 2px;
+            margin: 0 3px;
+        }
     }
 </style>
 </head>

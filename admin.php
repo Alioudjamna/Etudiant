@@ -24,13 +24,16 @@
                 color: white;
                 padding: 1em;
                 text-align: center;
+                
             }
 
             nav a {
+                
                 color: white;
                 text-decoration: none;
-                padding: 10px 20px;
+                padding: 10px;
                 margin: 0 10px;
+                text-align: center;
                 border-radius: 5px;
                 background-color: #4a6572;
             }
@@ -51,10 +54,11 @@
                 background-color: #3498db;
                 color: white;
                 text-align: center;
-                padding: 1em;
+                position: center;
+                padding: 5px;
                 position: fixed;
+                position: relative;
                 bottom: 0;
-                width: 100%;
             }
 
             footer p {
@@ -64,7 +68,7 @@
             footer a {
                 color: white;
                 text-decoration: none;
-                margin: 0 10px;
+                margin: 0 1px;
                 padding: 5px;
                 border-radius: 5px;
                 transition: background-color 0.3s;
@@ -77,14 +81,34 @@
             footer div {
                 display: flex;
                 justify-content: center;
+                position: relative;
+                margin: 10px;
+                padding-right: 10px !important; 
             }
-            @media screen and (max-width: 425px) {
+            @media screen and (max-width: 550px) {
                 nav a{
                     display: flex;
-                    width: 200px;
-                    margin:10px 10px 10px 10px;
+                    
+                    line-height: 10px;
+                    width: 180px;
+                    margin:10px auto;
+                    padding:1em;
+                    text-align: center;
                 }
-                
+                footer a{
+                    display: flex;
+                }
+                footer div{
+                    display: none;
+                    justify-content: none;
+                }
+            }
+            @media screen and (max-width: 590px){
+                nav a{
+                    margin:5px;
+                    display: inline-block;                   
+                    padding: 1em;
+                }
             }
         </style>
 </head>
@@ -120,7 +144,7 @@
 
     <footer>
         <p>© 2023 Projet Gestion des Étudiants</p>
-        <div style="float: right;">
+        <div>
             <a href="accueil.php">Accueil</a>
             <a href="admin.php">Admin</a>
             <a href="ajout_etudiant.php">Ajouter Étudiant</a>
