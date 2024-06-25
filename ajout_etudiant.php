@@ -1,18 +1,8 @@
 <?php
-session_start();
-
-// Vérifier si l'utilisateur est connecté
-if (!isset($_SESSION['identifiant'])) {
-    header('Location: connexion.php');
-    exit();
-}
-
-// Connexion à la base de données (ajustez les paramètres selon votre configuration)
-$pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+include 'configae.php';
 
 // Récupérer la liste des filières depuis la base de données
-$stmt = $pdo->prepare("SELECT * FROM filiere");
+$stmt = $pdo->prepare("SELECT * FROM filiere ORDER BY nom_filiere");
 $stmt->execute();
 $filieres = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -31,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $annee_etude = $_POST['annee_etude'];
     $parcours = $_POST['parcours'];
-    
+
     // Vérifier si la filière est définie dans $_POST
     $id_filiere = null;
     if (isset($_POST['filieres'])) {
@@ -86,16 +76,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajout Étudiant</title>
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <style>
-                body {
-            font-family: 'Arial', sans-serif;
+        body {
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
             min-height: 100vh;
+        }
+
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 15px;
         }
 
         form {
@@ -103,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 10px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
-            width: 80%;
+            width: 100%;
             max-width: 600px;
             box-sizing: border-box;
             margin-top: 20px;
@@ -151,11 +163,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #2c3e50;
             color: white;
             text-align: center;
-            position: center;
             padding: 5px;
             position: relative;
             bottom: 0;
-            width: 100%;
         }
 
         footer a {
@@ -178,11 +188,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-top: 10px;
             padding-right: 10px !important; 
         }
+
         @media screen and (max-width: 400px) {
-            footer div{
+            footer div {
                 margin-left: 0px;
             }
-            footer a{
+            footer a {
                 padding: 2px;
                 margin: 0 3px;
             }
@@ -212,105 +223,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
-<body>
-    <!-- Formulaire d'ajout d'étudiant -->
-    <form action="" method="post">
-        <h2>Formulaire d'Ajout Étudiant</h2>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <?php include 'includesae/navbar.php'; ?>
+        <?php include 'includesae/sidebar.php'; ?>
 
-        <?php if (!empty($error_message)): ?>
-            <!-- Afficher le message d'erreur s'il existe -->
-            <p><?php echo $error_message; ?></p>
-        <?php endif; ?>
+        <div class="content-wrapper">
+            <div class="container">
+                <form action="" method="post">
+                    <h2>Formulaire d'Ajout Étudiant</h2>
 
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" required>
+                    <?php if (!empty($error_message)): ?>
+                        <!-- Afficher le message d'erreur s'il existe -->
+                        <p><?php echo $error_message; ?></p>
+                    <?php endif; ?>
 
-        <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" name="prenom" required>
+                    <label for="nom">Nom :</label>
+                    <input type="text" id="nom" name="nom" required>
 
-        <label for="date_naissance">Date de Naissance :</label>
-        <input type="date" id="date_naissance" name="date_naissance" required>
+                    <label for="prenom">Prénom :</label>
+                    <input type="text" id="prenom" name="prenom" required>
 
-        <label for="lieu_naissance">Lieu de Naissance :</label>
-        <input type="text" id="lieu_naissance" name="lieu_naissance" required>
+                    <label for="date_naissance">Date de Naissance :</label>
+                    <input type="date" id="date_naissance" name="date_naissance" required>
 
-        <label for="adresse">Adresse :</label>
-        <input type="text" id="adresse" name="adresse" required>
+                    <label for="lieu_naissance">Lieu de Naissance :</label>
+                    <input type="text" id="lieu_naissance" name="lieu_naissance" required>
 
-        <label for="ville">Ville :</label>
-        <input type="text" id="ville" name="ville" required>
+                    <label for="adresse">Adresse :</label>
+                    <input type="text" id="adresse" name="adresse" required>
 
-        <label for="pays">Pays :</label>
-        <input type="text" id="pays" name="pays" required>
+                    <label for="ville">Ville :</label>
+                    <input type="text" id="ville" name="ville" required>
 
-        <label for="sexe">Sexe :</label>
-        <select id="sexe" name="sexe" required>
-            <option value="Homme">Homme</option>
-            <option value="Femme">Femme</option>
-        </select>
+                    <label for="pays">Pays :</label>
+                    <input type="text" id="pays" name="pays" required>
 
-        <label for="telephone">Téléphone :</label>
-        <input type="tel" id="telephone" name="telephone" required>
+                    <label for="sexe">Sexe :</label>
+                    <select id="sexe" name="sexe" required>
+                        <option value="Homme">Homme</option>
+                        <option value="Femme">Femme</option>
+                    </select>
 
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required>
+                    <label for="telephone">Téléphone :</label>
+                    <input type="tel" id="telephone" name="telephone" required>
 
-        <label for="annee_etude">Année d'Étude :</label>
-        <input type="text" id="annee_etude" name="annee_etude" required>
+                    <label for="email">Email :</label>
+                    <input type="email" id="email" name="email" required>
 
-        <label for="filieres">Filières Choisies :</label>
-            <select id="filieres" name="filieres" required>
-                <?php
-                // Utiliser un tableau associatif pour suivre les filières déjà affichées
-                $filiere_affichees = array();
+                    <label for="annee_etude">Année d'Étude :</label>
+                    <input type="text" id="annee_etude" name="annee_etude" required>
 
-                foreach ($filieres as $filiere):
-                    if (!in_array($filiere['nom_filiere'], $filiere_affichees)):
-                        $filiere_affichees[] = $filiere['nom_filiere'];
-                ?>
-                        <option value="<?php echo $filiere['nom_filiere']; ?>"><?php echo $filiere['nom_filiere']; ?></option>
-                <?php
-                    endif;
-                endforeach;
-                ?>
-            </select>
+                    <label for="filieres">Filières Choisies :</label>
+                    <select id="filieres" name="filieres" required>
+                        <?php
+                        $filiere_affichees = array();
+                        foreach ($filieres as $filiere):
+                            if (!in_array($filiere['nom_filiere'], $filiere_affichees)):
+                                $filiere_affichees[] = $filiere['nom_filiere'];
+                        ?>
+                                <option value="<?php echo $filiere['nom_filiere']; ?>"><?php echo $filiere['nom_filiere']; ?></option>
+                        <?php
+                            endif;
+                        endforeach;
+                        ?>
+                    </select>
 
-        <label for="parcours">Parcours :</label>
-        <select id="parcours" name="parcours" required>
-            <option value="licence">Licence</option>
-            <option value="master">Master</option>
-            <option value="doctorat">Doctorat</option>
-        </select>
+                    <label for="parcours">Parcours :</label>
+                    <select id="parcours" name="parcours" required>
+                        <option value="licence">Licence</option>
+                        <option value="master">Master</option>
+                        <option value="doctorat">Doctorat</option>
+                    </select>
 
-        <button type="submit">Ajouter Étudiant</button>
-    </form>
-    <div id="change-bg" onclick="changeBackground()">Changer le fond d'écran</div>
-
-    <footer>
-        <p>© 2023 Projet Gestion des Étudiants</p>
-        <div>
-            <a href="accueil.php">Accueil</a>
-            <a href="admin.php">Admin</a>
-            <a href="ajout_etudiant.php">Ajouter Étudiant</a>
-            <a href="liste_etudiants.php">Liste Étudiants</a>
-            <a href="ajout_filiere.php">Ajouter Filière</a>
-            <a href="liste_filieres.php">Liste Filières</a>
-            <a href="liste_etudiants_modif.php">Modification Étudiant</a>
-            <a href="modification_filiere.php">Modification Filière</a>
+                    <button type="submit">Ajouter Étudiant</button>
+                </form>
+            </div>
         </div>
-    </footer>
 
+        <?php include 'includes/footer.php'; ?>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-8W2M2Xz6PFLxyG5OT/gk/J7EoQhTr/ppYihmHt+M6RGMKROX56WXO3XhHPX9OQQ5" crossorigin="anonymous"></script>
     <script>
         function validateForm() {
-            // Ajoutez des validations personnalisées si nécessaire
             return true;
         }
 
-        function changeBackground() {
-            // Ajoutez ici la logique pour changer le fond d'écran
-            alert('Fonctionnalité à implémenter');
-        }
     </script>
-
 </body>
 </html>

@@ -1,32 +1,60 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supprimer une filière</title>
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 100px; /* Ajout de marge en bas pour éviter le chevauchement avec le pied de page */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
         }
 
         .container {
-            margin-top: 20px;
-            margin-bottom: 20px; /* Ajustement de la marge en bas pour éviter le chevauchement avec le pied de page */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 600px;
-            margin: 0 auto;
         }
 
         h2 {
             color: #343a40;
             text-align: center;
+            margin-bottom: 20px;
         }
 
         label {
@@ -46,40 +74,31 @@
             box-sizing: border-box;
         }
 
-        select {
-            appearance: none;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
+        .btn-primary {
+            background-color: #dc3545; /* Rouge pour le bouton de suppression */
             border-color: #dc3545;
             color: #fff;
             padding: 10px;
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
-            display: inline-block;
             text-align: center;
             text-decoration: none;
         }
 
-        .btn-danger:hover {
+        .btn-primary:hover {
             background-color: #c82333;
             border-color: #bd2130;
         }
 
         footer {
-            background-color: #343a40;
+            background-color: #2c3e50;
             color: white;
             text-align: center;
-            padding: 1em;
-            position: fixed;
-            bottom: 0;
+            padding: 10px;
+            margin-left: 0!important;
             width: 100%;
-        }
-
-        footer p {
-            margin: 0;
+            margin-top: auto; /* Assure que le footer reste en bas */
         }
 
         footer a {
@@ -92,98 +111,68 @@
         }
 
         footer a:hover {
-            background-color: #555;
+            background-color: #34495e;
         }
     </style>
+   
 </head>
-<body>
-    <div class="container">
-        <h2>Supprimer une filière</h2>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <?php include 'includesae/navbar.php'; ?>
+        <?php include 'includesae/sidebar.php'; ?>
+        <div class="content-wrapper">
+            <div class="container">
+                <h2>Supprimer une filière</h2>
+                <?php include 'configsf.php';?>
+                
+                <form id="deleteForm" action="supprimer_filiere.php" method="post">
+            <label for="id_filiere">Sélectionnez une filière à supprimer:</label><br>
+            <!-- Afficher la liste des filières à partir de la base de données -->
+            <select name="id_filiere" required>
+                <?php
+                // Connexion à la base de données (ajustez les paramètres selon votre configuration)
+                $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        <?php
-        $servername = "localhost";
-        $dbname = "gestion_etudiants";
-        $dbusername = "root";
-        $dbpassword = "";
+                // Récupérer la liste des filières depuis la base de données
+                $sql = "SELECT DISTINCT nom_filiere, id_filiere FROM filiere ORDER BY nom_filiere ASC";
+                $stmt = $pdo->query($sql);
+                $filiere_array = [];
 
-        try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    if (!in_array($row['nom_filiere'], $filiere_array)) {
+                        echo "<option value=\"" . $row['id_filiere'] . "\">" . $row['nom_filiere'] . "</option>";
+                        $filiere_array[] = $row['nom_filiere'];
+                    }
+                }
+                ?>
+            </select><br>
 
-            // Vérifie si le formulaire est soumis
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $id_filiere = $_POST['id_filiere'];
+            <input type="button" class="btn-danger" value="Supprimer" onclick="confirmDelete()">
+        </form>
 
-                // Supprime la filière de la base de données
-                $sql = "DELETE FROM filiere WHERE id_filiere = :id_filiere";
-                $stmt = $conn->prepare($sql);
-                $stmt->execute([':id_filiere' => $id_filiere]);
-
-                echo 'Suppression réussie';
+        <script>
+            function confirmDelete() {
+                if (confirm("Êtes-vous sûr de vouloir supprimer cette filière ?")) {
+                    document.getElementById('deleteForm').submit();
+                }
             }
-        } catch(PDOException $e) {
-            echo "Échec de la suppression: " . $e->getMessage();
-        }
-        ?>
-        <form id="deleteForm" action="supprimer_filiere.php" method="post">
-    <label for="id_filiere">Sélectionnez une filière à supprimer:</label><br>
-    <!-- Afficher la liste des filières à partir de la base de données -->
-    <select name="id_filiere" required>
-        <?php
-        // Connexion à la base de données (ajustez les paramètres selon votre configuration)
-        $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Récupérer la liste des filières depuis la base de données
-        $sql = "SELECT DISTINCT nom_filiere, id_filiere FROM filiere ORDER BY nom_filiere ASC";
-        $stmt = $pdo->query($sql);
-        $filiere_array = [];
-
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            if (!in_array($row['nom_filiere'], $filiere_array)) {
-                echo "<option value=\"" . $row['id_filiere'] . "\">" . $row['nom_filiere'] . "</option>";
-                $filiere_array[] = $row['nom_filiere'];
-            }
-        }
-        ?>
-    </select><br>
-
-    <input type="button" class="btn-danger" value="Supprimer" onclick="confirmDelete()">
-</form>
-
-<script>
-    function confirmDelete() {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cette filière ?")) {
-            document.getElementById('deleteForm').submit();
-        }
-    }
-</script>
+        </script>
 
 
-    
+            
+            </div>
+
+            <script>
+                function confirmDelete() {
+                    if (confirm("Voulez-vous vraiment supprimer cette filière?")) {
+                        document.getElementById("deleteForm").submit();
+                    }
+                }
+            </script>
+        <?php include 'includesae/footer.php'; ?>
     </div>
-
-    <script>
-        function confirmDelete() {
-            if (confirm("Voulez-vous vraiment supprimer cette filière?")) {
-                document.getElementById("deleteForm").submit();
-            }
-        }
-    </script>
-
-    <footer>
-        <p>© 2023 Projet Gestion des Étudiants</p>
-        <div>
-            <a href="accueil.php">Accueil</a>
-            <a href="admin.php">Admin</a>
-            <a href="ajout_etudiant.php">Ajouter Étudiant</a>
-            <a href="liste_etudiants.php">Liste Étudiants</a>
-            <a href="ajout_filiere.php">Ajouter Filière</a>
-            <a href="liste_filieres.php">Liste Filières</a>
-            <a href="liste_etudiants_modif.php">Modification Étudiant</a>
-            <a href="modification_filiere.php">Modification Filière</a>
-            <a href="supprimer_filiere.php">Supprimer Filière</a>
-        </div>
-    </footer>
+</div>
+    
 </body>
 </html>

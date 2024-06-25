@@ -1,15 +1,6 @@
 <?php
-    session_start();
-
-    // Vérifier si l'utilisateur est connecté
-    if (!isset($_SESSION['identifiant'])) {
-        header('Location: connexion.php');
-        exit();
-    }
-
-    // Connexion à la base de données (ajustez les paramètres selon votre configuration)
-    $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   
+   include 'configaf.php';
 
     // Filieres à ajouter
     $nouvellesFilieres = [
@@ -79,6 +70,12 @@
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <title>Liste des filières</title>
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -112,48 +109,6 @@
         .btn {
             margin-top: 20px;
         }
-
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 5px;
-            margin-top: 20px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
-        }
-
-        footer a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            padding: 5px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        footer a:hover {
-            background-color: #34495e;
-        }
-
-        footer div {
-            display: inline-block;
-            justify-content: center;
-            position: relative;
-            margin-top: 10px;
-            padding-right: 10px !important; 
-        }
-        @media screen and (max-width: 400px) {
-            footer div{
-                margin-left: 0px;
-            }
-            footer a{
-                padding: 2px;
-                margin: 0 3px;
-            }
-        }
-
         @media print {
             body * {
                 visibility: hidden;
@@ -167,47 +122,39 @@
                 top: 0;
                 width: 100%;
             }
-            footer * {
-                visibility: hidden;
-            }
+
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2>Liste des filières</h2>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <?php include 'includesae/navbar.php'; ?>
+        <?php include 'includesae/sidebar.php'; ?>
+        <div class="content-wrapper">
+            <div class="container">
+                <h2>Liste des filières</h2>
 
-        <!-- Afficher la liste des filières -->
-        <table id="filiere" class="display nowrap printable" border="1" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Nom de la filière</th>
-                    <!-- Ajoutez d'autres colonnes selon vos besoins -->
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($filieres as $filiere): ?>
-                    <tr>
-                        <td><?php echo htmlspecialchars($filiere['nom_filiere']); ?></td>
-                        <!-- Ajoutez d'autres colonnes selon vos besoins -->
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>    
+                <!-- Afficher la liste des filières -->
+                <table id="filiere" class="display nowrap printable" border="1" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Nom de la filière</th>
+                            <!-- Ajoutez d'autres colonnes selon vos besoins -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($filieres as $filiere): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($filiere['nom_filiere']); ?></td>
+                                <!-- Ajoutez d'autres colonnes selon vos besoins -->
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>    
+            </div>
+            </div>
+        <?php include 'includesae/footer.php'; ?>
     </div>
-    <footer>
-        <p>© 2023 Projet Gestion des Étudiants</p>
-        <div>
-            <a href="accueil.php">Accueil</a>
-            <a href="admin.php">Admin</a>
-            <a href="ajout_etudiant.php">Ajouter Étudiant</a>
-            <a href="liste_etudiants.php">Liste Étudiants</a>
-            <a href="ajout_filiere.php">Ajouter Filière</a>
-            <a href="liste_filieres.php">Liste Filières</a>
-            <a href="liste_etudiants_modif.php">Modification Étudiant</a>
-            <a href="modification_filiere.php">Modification Filière</a>
-        </div>
-    </footer>
 
 
     <script>

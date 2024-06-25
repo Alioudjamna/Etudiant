@@ -1,15 +1,5 @@
 <?php
-    session_start();
-
-    // Vérifier si l'utilisateur est connecté
-    if (!isset($_SESSION['identifiant'])) {
-        header('Location: connexion.php');
-        exit();
-    }
-
-    // Connexion à la base de données (ajustez les paramètres selon votre configuration)
-    $pdo = new PDO('mysql:host=localhost;dbname=gestion_etudiants', 'root', '');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    include 'configaf.php';
 
     // Récupérer la liste des étudiants depuis la base de données en ordre alphabétique
     // Requête pour récupérer les étudiants et leur filière
@@ -40,6 +30,12 @@
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <title>Liste des étudiants</title>
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <style>
         body {
             background-color: #f0f5f9;
@@ -140,52 +136,44 @@
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h2>Liste des étudiants</h2>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <?php include 'includesae/navbar.php'; ?>
+        <?php include 'includesae/sidebar.php'; ?>
+        <div class="content-wrapper">
+        <div class="container">
+            <h2>Liste des étudiants</h2>
 
-        <!-- Afficher la liste des étudiants -->
-        <table id="etudiant" class="display nowrap printable" border="1">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Sexe</th>
-                    <th>Filiere</th>
-                    <th>Lieu de Naissance</th>
-                    <th>Date de Naissance</th>
-                    <!-- Ajoutez d'autres colonnes selon vos besoins -->
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($etudiants as $etudiant): ?>
+            <!-- Afficher la liste des étudiants -->
+            <table id="etudiant" class="display nowrap printable" border="1">
+                <thead>
                     <tr>
-                        <td><?php echo htmlspecialchars($etudiant['nom'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($etudiant['prenom'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($etudiant['sexe'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($etudiant['nom_filiere'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($etudiant['lieu_naissance'], ENT_QUOTES, 'UTF-8'); ?></td>
-                        <td><?php echo htmlspecialchars($etudiant['date_naissance'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Sexe</th>
+                        <th>Filiere</th>
+                        <th>Date de Naissance</th>
                         <!-- Ajoutez d'autres colonnes selon vos besoins -->
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($etudiants as $etudiant): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($etudiant['nom'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($etudiant['prenom'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($etudiant['sexe'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($etudiant['nom_filiere'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($etudiant['date_naissance'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <!-- Ajoutez d'autres colonnes selon vos besoins -->
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         
-    </div>
-    <footer>
-        <p>© 2023 Projet Gestion des Étudiants</p>
-        <div>
-            <a href="accueil.php">Accueil</a>
-            <a href="admin.php">Admin</a>
-            <a href="ajout_etudiant.php">Ajouter Étudiant</a>
-            <a href="liste_etudiants.php">Liste Étudiants</a>
-            <a href="ajout_filiere.php">Ajouter Filière</a>
-            <a href="liste_filieres.php">Liste Filières</a>
-            <a href="liste_etudiants_modif.php">Modification Étudiant</a>
-            <a href="modification_filiere.php">Modification Filière</a>
+            </div>
         </div>
-    </footer>
+        <?php include 'includesae/footer.php'; ?>
+    </div>
 
     <script>
         $(document).ready(function() {
